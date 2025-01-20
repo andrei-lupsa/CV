@@ -1,0 +1,33 @@
+name: Commit stage
+on: 
+  push:
+    branches: 
+      - main
+    # paths:
+      # - '*.md'
+
+jobs:
+  build:
+    name: Build and upload PDF
+    runs-on: ubuntu-22.04
+    permissions: 
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: baileyjm02/markdown-to-pdf@v1
+        with:
+          input_dir: Andrei-Lupsa-CV.md
+          output_dir: pdf
+          build_html: false
+      # - uses: actions/upload-artifact@v4
+        # with:
+          # name: CV
+          # path: pdf/Andrei-Lupsa-CV.pdf
+          # overwrite: true
+      - name: Upload Release Asset
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: pdf/Andrei-Lupsa-CV.pdf
+          tag: 'v1.0.0'
+          allowUpdates: true    
+          artifactContentType: application/pdf      
